@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}Forums{% endblock %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ thread.title }}</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-4">
+        <h1>{{ thread.title }}</h1>
+        <p>By {{ thread.author.username }} on {{ thread.created_at|date:"F j, Y" }}</p>
+        <div class="card mb-3">
+            <div class="card-body">
+                <p>{{ thread.content }}</p>
+                <button class="btn btn-success" onclick="alert('Liked!')">👍 Like</button>
+            </div>
+        </div>
+
+        <h2>Comments</h2>
+        {% for comment in comments %}
+            <div class="card mb-2">
+                <div class="card-body">
+                    <p><strong>{{ comment.author.username }}:</strong> {{ comment.content }}</p>
+                    <p class="text-muted">{{ comment.created_at|date:"F j, Y" }}</p>
+                </div>
+            </div>
+        {% empty %}
+            <p>No comments yet.</p>
+        {% endfor %}
+
+        <h3>Add a Comment</h3>
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary">Post Comment</button>
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+{% endblock %}

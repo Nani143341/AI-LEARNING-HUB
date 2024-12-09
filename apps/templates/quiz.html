@@ -1,0 +1,46 @@
+{%block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ quiz.title }}</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto mt-10">
+        <h1 class="text-3xl font-bold mb-6">{{ quiz.title }}</h1>
+        
+        <form method="POST" action="">
+            {% csrf_token %}
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+                <h2 class="text-xl font-semibold mb-4">Questions:</h2>
+                <ul class="space-y-4">
+                    {% for question in questions %}
+                        <li class="p-4 border border-gray-200 rounded-md">
+                            <p class="font-medium">{{ forloop.counter }}. {{ question.text }}</p>
+                            <div class="mt-2">
+                                {% for answer in question.answers.all %}  {# Accessing related answers using the correct related_name #}
+                                    <label class="block">
+                                        <input type="radio" name="{{ question.id }}" value="{{ answer.id }}">
+                                        {{ answer.text }}
+                                    </label>
+                                {% endfor %}
+                            </div>
+                        </li>
+                    {% empty %}
+                        <li class="text-gray-500">No questions available for this quiz.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="mt-6">
+                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
+                    Submit Quiz
+                </button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
+{% endblock content %}

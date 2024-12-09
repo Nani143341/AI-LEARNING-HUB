@@ -1,0 +1,159 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="hero-section position-relative overflow-hidden py-5 mb-5">
+    <div class="container position-relative z-index-1 text-center">
+        <h1 class="display-3 fw-bold text-white mb-3">
+            <i class="fas fa-brain me-2"></i>Welcome to AI Learning Hub
+        </h1>
+        <p class="lead text-white-50 mb-4">Your gateway to AI education and cutting-edge technology insights</p>
+        
+        <!-- Enhanced Search Bar -->
+        <form method="GET" action="{% url 'blog:course_search' %}" class="search-form">
+            <div class="input-group input-group-lg">
+                <span class="input-group-text bg-transparent border-end-0">
+                    <i class="fas fa-search text-muted"></i>
+                </span>
+                <input type="text" name="q" class="form-control border-start-0" 
+                       placeholder="Search for courses..." required>
+                <button class="btn btn-primary px-4" type="submit">
+                    Search
+                </button>
+            </div>
+        </form>
+        <a href="{% url 'blog:course_list' %}" class="btn btn-primary btn-lg mt-3">Explore Courses</a>
+    </div>
+</div>
+
+<!-- Enrolled Courses Section -->
+<div class="container mb-5">
+    <h2 class="mb-4">
+        <i class="fas fa-user-graduate text-primary me-2"></i>Your Enrolled Courses
+    </h2>
+    <div class="row g-4">
+        {% for enrollment in enrolled_courses %}
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 course-card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ enrollment.course.title }}</h5>
+                        <p class="card-text text-muted">{{ enrollment.course.description|truncatewords:20 }}</p>
+                        <span class="text-muted">Difficulty: {{ enrollment.course.get_difficulty_display }}</span>
+                        <a href="{% url 'blog:course_detail' enrollment.course.slug %}" class="btn btn-primary mt-3">
+                            <i class="fas fa-graduation-cap me-2"></i>Continue
+                        </a>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="col-12">
+                <p class="text-center">You are not enrolled in any courses yet.</p>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Premium Courses Section -->
+<div class="container mb-5">
+    <h2 class="mb-4">
+        <i class="fas fa-crown text-warning me-2"></i>Premium Courses
+    </h2>
+    <div class="row g-4">
+        {% for course in premium_courses %}
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 course-card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ course.title }}</h5>
+                        <p class="card-text text-muted">{{ course.description|truncatewords:20 }}</p>
+                        <span class="text-muted">Difficulty: {{ course.get_difficulty_display }}</span>
+                        <span class="badge bg-warning ml-2">Premium</span>
+                        <a href="{% url 'blog:course_detail' course.slug %}" class="btn btn-primary mt-3">
+                            <i class="fas fa-graduation-cap me-2"></i>Enroll Now
+                        </a>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="col-12">
+                <p class="text-center">No premium courses available at the moment.</p>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Regular Courses Section -->
+<div class="container mb-5">
+    <h2 class="mb-4">
+        <i class="fas fa-book text-primary me-2"></i>Free Courses
+    </h2>
+    <div class="row g-4">
+        {% for course in regular_courses %}
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 course-card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ course.title }}</h5>
+                        <p class="card-text text-muted">{{ course.description|truncatewords:20 }}</p>
+                        <span class="text-muted">Difficulty: {{ course.get_difficulty_display }}</span>
+                        <a href="{% url 'blog:course_detail' course.slug %}" class="btn btn-primary mt-3">
+                            <i class="fas fa-graduation-cap me-2"></i>Enroll Now
+                        </a>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="col-12">
+                <p class="text-center">No free courses available at the moment.</p>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+    .hero-section {
+        background: linear-gradient(135deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);
+        min-height: 400px;
+        display: flex;
+        align-items: center;
+    }
+    
+    .search-form {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+    
+    .course-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border: none;
+        box-shadow: 0 2px 4px rgba(0,0,0,.05);
+    }
+    
+    .course-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 8px rgba(0,0,0,.1);
+    }
+    
+    .card-title {
+        color: #2d3748;
+        font-weight: 600;
+    }
+    
+    .badge {
+        padding: 0.5em 1em;
+        font-weight: 500;
+    }
+    
+    .list-group-item-action:hover {
+        background-color: #f8f9fa;
+    }
+    
+    @media (max-width: 768px) {
+        .hero-section {
+            min-height: 300px;
+        }
+        
+        .display-3 {
+            font-size: 2.5rem;
+        }
+    }
+</style>
+{% endblock content %}

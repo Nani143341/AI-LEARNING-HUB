@@ -1,0 +1,27 @@
+<!-- course_search_results.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="mb-4">Search Results for "{{ query }}"</h1>
+
+    {% if courses %}
+        <div class="row">
+            {% for course in courses %}
+                <div class="col-md-4">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ course.title }}</h5>
+                            <p class="card-text">{{ course.description|truncatewords:20 }}</p>
+                            <span class="text-muted">Difficulty: {{ course.get_difficulty_display }}</span>
+                            <a href="{% url 'blog:course_detail' course.slug %}" class="btn btn-primary mt-3">Enroll Now</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No courses found matching your search criteria.</p>
+    {% endif %}
+</div>
+{% endblock content %}

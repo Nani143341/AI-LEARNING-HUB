@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}Profile - {{ user.username }}{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">Profile</h2>
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">User Information</h5>
+            <p><strong>Username:</strong> {{ user.username }}</p>
+            <p><strong>Email:</strong> {{ user.email }}</p>
+            <p><strong>Membership:</strong> 
+                {% if user_profile.has_premium_access %}
+                    <span class="badge bg-warning text-dark">Premium</span>
+                {% else %}
+                    <span class="badge bg-secondary">Free</span>
+                {% endif %}
+            </p>
+        </div>
+    </div>
+
+    <h4 class="mb-3">Enrolled Courses</h4>
+    {% if enrolled_courses %}
+        <div class="row">
+            {% for enrollment in enrolled_courses %}
+                <div class="col-md-4">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ enrollment.course.title }}</h5>
+                            <p class="card-text">{{ enrollment.course.description|truncatewords:20 }}</p>
+                            <a href="{% url 'blog:course_detail' enrollment.course.slug %}" class="btn btn-primary">Continue Course</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>You are not enrolled in any courses yet.</p>
+    {% endif %}
+</div>
+{% endblock %}

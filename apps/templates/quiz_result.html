@@ -1,0 +1,59 @@
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ quiz.title }} - Results</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto mt-10">
+        <h1 class="text-3xl font-bold mb-6">{{ quiz.title }}</h1>
+        
+        <h2 class="text-xl font-semibold mb-4">Quiz Results</h2>
+        <p>Your score: <strong>{{ results.score }}</strong> out of <strong>{{ results.total_questions }}</strong></p>
+
+        <table class="min-w-full bg-white border border-gray-200 mt-4">
+            <thead>
+                <tr>
+                    <th class="border border-gray-300 px-4 py-2">Question</th>
+                    <th class="border border-gray-300 px-4 py-2">Your Answer</th>
+                    <th class="border border-gray-300 px-4 py-2">Correct Answer(s)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for question in results.failed_questions %}
+                    <tr>
+                        <td class="border border-gray-300 px-4 py-2">{{ question.question }}</td>
+                        <td class="border border-gray-300 px-4 py-2">
+                            {% if question.user_answer %}
+                                {{ question.user_answer }}
+                            {% else %}
+                                No answer given
+                            {% endif %}
+                        </td>
+                        <td class="border border-gray-300 px-4 py-2">
+                            {{ question.correct_answers|join:", " }}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {% if results.failed_questions|length == 0 %}
+            <p class="mt-4 text-green-500">Congratulations! You answered all questions correctly!</p>
+        {% endif %}
+
+        <div class="mt-6">
+            <a href="{% url 'blog:course_detail' quiz.course.slug %}" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
+                Back to Course Details
+            </a>
+            <a href="{% url 'blog:quiz' quiz.id %}" class="bg-gray-300 text-black px-4 py-2 rounded-md hover:bg-gray-400 ml-2">
+                Take Again
+            </a>
+        </div>
+    </div>
+</body>
+</html>
+{% endblock content %}

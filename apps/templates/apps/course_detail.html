@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="container mt-5">
+    <h1>{{ course.title }}</h1>
+    <p>{{ course.description }}</p>
+    <h4>Difficulty: {{ course.get_difficulty_display }}</h4>
+    {% if course.is_premium %}
+      <span class="badge badge-warning">Premium</span>
+    {% endif %}
+    <div>
+      <iframe width="100%" height="315" src="{{ course.video_url }}" frameborder="0" allowfullscreen></iframe>
+    </div>
+    <form method="POST" class="mt-4">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-primary">Enroll in Course</button>
+    </form>
+  </div>
+{% endblock %}

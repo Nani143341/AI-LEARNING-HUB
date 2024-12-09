@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block title %}Blog Post List{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="display-4 text-center mt-5">Blog Posts</h1>
+
+    <!-- Search Bar -->
+    <form method="GET" class="mb-4">
+        <div class="input-group">
+            <input type="text" class="form-control" name="q" placeholder="Search by title" value="{{ query }}">
+            <div class="input-group-append">
+                <button type="submit" class="btn btn-outline-secondary">
+                    <i class="fas fa-search"></i> Search
+                </button>
+            </div>
+        </div>
+    </form>
+
+    <h2 class="mb-4 text-center">{{ message }}</h2>
+
+    {% if posts %}
+    <ul class="list-group mb-5">
+        {% for post in posts %}
+        <li class="list-group-item">
+            <h4 class="d-flex justify-content-between align-items-center">
+                {{ post.title }}
+                <a href="{% url 'blog:edit_blog_post' pk=post.pk %}" class="btn btn-warning btn-sm">
+                    <i class="fas fa-edit"></i> Edit
+                </a>
+            </h4>
+            <p>{{ post.content }}</p>
+            <p class="text-muted">
+                <i class="fas fa-user"></i> Published by: {{ post.user.username }} on {{ post.pub_date }}
+            </p>
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p class="text-center">No blog posts available.</p>
+    {% endif %}
+
+    <!-- Button to redirect to create-blog -->
+    <div class="text-center mb-5">
+        <a href="{% url 'blog:create_blog_post' %}" class="btn btn-success">
+            <i class="fas fa-plus"></i> Create Blog
+        </a>
+    </div>
+</div>
+
+<style>
+    .list-group-item {
+        border: 1px solid #e0e0e0;
+        border-radius: 5px;
+        margin-bottom: 10px;
+        transition: box-shadow 0.3s ease;
+    }
+
+    .list-group-item:hover {
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h4 {
+        font-weight: 600;
+    }
+
+    p {
+        margin: 0;
+    }
+
+    .btn-warning {
+        margin-left: 10px;
+    }
+</style>
+
+<!-- Font Awesome Script (Make sure to include this in your base.html) -->
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+{% endblock %}

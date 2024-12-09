@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4 text-center">Trending News & Courses Videos</h2>
+    <div class="row">
+        <!-- Trending News Section -->
+        <div class="col-lg-6 mb-4">
+            <h3 class="mb-3">Trending News</h3>
+            <div class="row row-cols-1 g-4">
+                {% for video_id in trending_news_videos %}
+                <div class="col">
+                    <div class="card shadow-sm border-0 h-100">
+                        <div class="ratio ratio-16x9">
+                            <iframe class="embed-responsive-item"
+                                    src="https://www.youtube.com/embed/{{ video_id }}" 
+                                    frameborder="0" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <!-- Popular Courses Section -->
+        <div class="col-lg-6 mb-4">
+            <h3 class="mb-3">Popular Courses</h3>
+            <div class="row row-cols-1 g-4">
+                {% for video_id in popular_courses_videos %}
+                <div class="col">
+                    <div class="card shadow-sm border-0 h-100">
+                        <div class="ratio ratio-16x9">
+                            <iframe class="embed-responsive-item"
+                                    src="https://www.youtube.com/embed/{{ video_id }}" 
+                                    frameborder="0" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    h2, h3 {
+        font-weight: 700;
+    }
+    .card {
+        overflow: hidden;
+        transition: transform 0.3s ease;
+    }
+    .card:hover {
+        transform: scale(1.02);
+    }
+    .ratio {
+        border-radius: 8px;
+    }
+</style>
+{% endblock %}

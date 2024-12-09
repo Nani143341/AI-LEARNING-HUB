@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <!-- Hero Section -->
+  <div class="container mt-5">
+    <div class="text-center">
+      <h1 class="display-4 mb-3">Welcome, Premium Member!</h1>
+      <p class="lead">Unlock exclusive content and dive deeper into AI and Machine Learning.</p>
+      <a href="{% url 'blog:course_list' %}" class="btn btn-primary btn-lg">Explore Premium Courses</a>
+    </div>
+  </div>
+
+  <!-- Featured Premium Courses Section -->
+  <div class="container mt-5">
+    <h2 class="mb-4">Your Premium Courses</h2>
+    <div class="row">
+      {% for course in courses %}
+        <div class="col-md-4">
+          <div class="card mb-4">
+            <img class="card-img-top" src="{{ course.image_url }}" alt="{{ course.title }}">
+            <div class="card-body">
+              <h5 class="card-title">{{ course.title }}</h5>
+              <p class="card-text">{{ course.description|truncatewords:25 }}</p>
+              <span class="text-muted">Difficulty: {{ course.get_difficulty_display }}</span>
+              <span class="badge badge-warning ml-2">Premium</span>
+              <a href="{% url 'blog:course_detail' course.slug %}" class="btn btn-primary mt-3">Start Learning</a>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Personalized Progress and Achievements Section -->
+  <div class="container mt-5">
+    <h2 class="mb-4">Your Progress</h2>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Course Progress</h5>
+            <p>You've completed {{ user.completed_courses_count }} out of {{ total_courses }} premium courses.</p>
+            <div class="progress">
+              <div class="progress-bar" role="progressbar" style="width: {{ progress_percentage }}%" aria-valuenow="{{ progress_percentage }}" aria-valuemin="0" aria-valuemax="100">{{ progress_percentage }}%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Achievements & Badges</h5>
+            <p>You've earned {{ user.badges_count }} badges in the community.</p>
+            <div>
+              {% for badge in user.badges %}
+                <span class="badge badge-success">{{ badge.name }}</span>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Latest AI News and Insights Section -->
+  <!-- <div class="container mt-5">
+    <h2 class="mb-4">AI News Feed</h2>
+    <div class="row">
+      <div class="col-lg-8">
+        <ul class="list-group">
+          {% for news in news_feed %}
+            <li class="list-group-item">
+              <a href="{{ news.url }}" target="_blank">{{ news.title }}</a>
+              <small class="text-muted d-block">Source: {{ news.source }}</small>
+              <small class="text-muted">Published: {{ news.published_date }}</small>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="col-lg-4">
+        <h5 class="mb-3">Upcoming Events</h5>
+        <ul class="list-group">
+          {% for event in upcoming_events %}
+            <li class="list-group-item">
+              <strong>{{ event.name }}</strong><br>
+              <small>Date: {{ event.date }}</small><br>
+              <small>Location: {{ event.location }}</small>
+              <a href="{{ event.link }}" target="_blank" class="btn btn-sm btn-primary mt-2">View Details</a>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div> -->
+
+  <!-- Community Section -->
+  <div class="container mt-5">
+    <h2 class="mb-4">Connect with the Community</h2>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Discussion Forums</h5>
+            <p>Engage in high-level AI discussions and get expert advice.</p>
+            <a href="{% url 'blog:forum_list' %}" class="btn btn-primary">Join the Forums</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Leaderboard</h5>
+            <p>Compete with fellow learners and see where you stand in the community.</p>
+            <a href="{% url 'blog:leaderboard' %}" class="btn btn-primary">View Leaderboard</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Embedded YouTube Videos Section -->
+  <div class="container mt-5">
+    <h2 class="mb-4">AI Trends & Course Videos</h2>
+    <div class="row">
+      <div class="col-md-6">
+        <h3>Latest AI Trends</h3>
+        <iframe width="100%" height="315" src="https://www.youtube.com/embed/some_video_id" frameborder="0" allowfullscreen></iframe>
+        <iframe width="100%" height="315" src="https://www.youtube.com/embed/another_video_id" frameborder="0" allowfullscreen></iframe>
+      </div>
+      <div class="col-md-6">
+        <h3>Popular Course Videos</h3>
+        <iframe width="100%" height="315" src="https://www.youtube.com/embed/popular_course_video_1" frameborder="0" allowfullscreen></iframe>
+        <iframe width="100%" height="315" src="https://www.youtube.com/embed/popular_course_video_2" frameborder="0" allowfullscreen></iframe>
+      </div>
+    </div>
+  </div>
+{% endblock content %}

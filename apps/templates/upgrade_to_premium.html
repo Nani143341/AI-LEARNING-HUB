@@ -1,0 +1,40 @@
+<!-- templates/upgrade_to_premium.html -->
+{% extends 'base.html' %}
+
+{% block title %}Upgrade to Premium{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="mb-4">Upgrade to Premium Membership</h1>
+    <p class="lead">Unlock all premium courses, community features, and exclusive AI resources.</p>
+    
+    <!-- Payment Options Section -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <h4 class="card-title">Choose Your Payment Plan</h4>
+            <form method="POST" action="{% url 'blog:upgrade_to_premium' %}">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="payment-plan" class="form-label">Select Payment Plan:</label>
+                    <select id="payment-plan" class="form-select" name="payment_plan" required>
+                        <option value="monthly">Monthly - $10/month</option>
+                        <option value="yearly">Yearly - $100/year</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Proceed to Payment</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Information Section -->
+    <div class="alert alert-info mt-3" role="alert">
+        <strong>Benefits of Premium Membership:</strong>
+        <ul>
+            <li>Access to all premium courses.</li>
+            <li>Community features and leaderboard rankings.</li>
+            <!-- <li>AI news feed and exclusive webinars.</li> -->
+            <li>Direct access to experts in our AI forums.</li>
+        </ul>
+    </div>
+</div>
+{% endblock %}

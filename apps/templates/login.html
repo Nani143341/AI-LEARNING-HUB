@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- Hero Section with Background and Introduction -->
+<div class="hero-section position-relative overflow-hidden py-5 mb-5">
+    <div class="container position-relative z-index-1">
+        <div class="row align-items-center">
+            <div class="col-lg-8 mx-auto text-center">
+                <h1 class="display-3 fw-bold text-white mb-3">
+                    <i class="fas fa-brain me-2"></i>Welcome to AI Learning Hub
+                </h1>
+                <p class="lead text-white-50 mb-4">Your gateway to AI education and cutting-edge technology insights</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Login Section -->
+<div class="container mt-5">
+    <div class="d-flex justify-content-center">
+        <div class="user_card">
+            <div class="d-flex justify-content-center">
+                <h3 id="form-title">LOGIN</h3>
+            </div>
+            <div class="d-flex justify-content-center form_container">
+                <form method="POST" action="{% url 'blog:login' %}">
+                    {% csrf_token %}
+                    
+                    <!-- Username Field -->
+                    <div class="form-group">
+                        <label for="username">Username:</label>
+                        <div class="input-group mb-3">
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fas fa-user"></i></span>
+                            </div>
+                            <input type="text" name="username" id="username" placeholder="Username..." class="form-control" required>
+                        </div>
+                        {% if form.username.errors %}
+                            <div class="text-danger small">
+                                {{ form.username.errors|join:", " }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Password Field -->
+                    <div class="form-group">
+                        <label for="password">Password:</label>
+                        <div class="input-group mb-2">
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fas fa-key"></i></span>
+                            </div>
+                            <input type="password" name="password" id="password" placeholder="Password..." class="form-control" required>
+                        </div>
+                        {% if form.password.errors %}
+                            <div class="text-danger small">
+                                {{ form.password.errors|join:", " }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Login Button -->
+                    <div class="d-flex justify-content-center mt-3 login_container">
+                        <input class="btn btn-primary" type="submit" value="Login">
+                    </div>
+                </form>
+            </div>
+
+            <!-- Message Display -->
+            <div class="mt-4">
+                {% if messages %}
+                    <div class="alert alert-warning">
+                        <strong>Messages:</strong>
+                        <ul class="mb-0">
+                            {% for message in messages %}
+                                <li>{{ message }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="mt-4">
+                <div class="d-flex justify-content-center links">
+                    Don't have an account? <a href="{% url 'blog:register' %}" class="ml-2">Sign Up</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .hero-section {
+        background: linear-gradient(135deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);
+        min-height: 300px;
+        display: flex;
+        align-items: center;
+    }
+    .user_card {
+        padding: 20px;
+        width: 100%;
+        max-width: 400px;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .hero-section h1, .hero-section p {
+        color: #fff;
+    }
+</style>
+{% endblock content %}

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ quiz.title }} - {{ course.title }}</title>
+</head>
+<body>
+    <h1>{{ quiz.title }}</h1>
+    <h3>Course: {{ course.title }}</h3>
+    <p>{{ course.description }}</p>
+    <p>{{ quiz.is_premium|yesno:"Premium,Free" }}</p>
+
+    <div>
+        <h2>Questions</h2>
+        {% for question in questions %}
+            <div>
+                <p><strong>{{ forloop.counter }}. {{ question.text }}</strong></p>
+                <ul>
+                    {% for answer in question.answers.all %}
+                        <li>
+                            {{ answer.text }} 
+                            {% if answer.is_correct %} <strong>(Correct)</strong> {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endfor %}
+    </div>
+</body>
+</html>

@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ question.text }}</title>
+</head>
+<body>
+    <h1>{{ question.text }}</h1>
+    <ul>
+        {% for answer in answers %}
+            <li>{{ answer.text }} (Correct: {% if answer.is_correct %}Yes{% else %}No{% endif %})</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

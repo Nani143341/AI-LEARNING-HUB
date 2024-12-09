@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block title %}Forums{% endblock %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forum Threads</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <div class="container mt-4">
+        <h1 class="text-center mb-4">Forum Threads</h1>
+
+        <!-- New Thread Form -->
+        <div class="card mb-4">
+            <div class="card-header text-white bg-primary">
+                <h5 class="mb-0">Start a New Thread</h5>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-plus-circle"></i> Post Thread
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Forum Threads Table -->
+        <table class="table table-hover table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>Title</th>
+                    <th>Comments</th>
+                    <th>Created By</th>
+                    <th>Date Created</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for thread in threads %}
+                <tr>
+                    <td>
+                        <a href="{% url 'blog:thread_detail' thread.id %}" class="text-decoration-none">
+                            <i class="fas fa-comments"></i> {{ thread.title }}
+                        </a>
+                    </td>
+                    <td>{{ thread.comment_count }}</td>
+                    <td>{{ thread.created_by.username }}</td>
+                    <td>{{ thread.created_at|date:"F j, Y" }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4" class="text-center">No threads available.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-light text-center p-3 mt-4">
+        <p>&copy; {% now "Y" %} The AI and ML Education Center News and Blogs</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+{% endblock %}

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ post.title }}</title>
+</head>
+<body>
+    <h1>{{ post.title }}</h1>
+    <p>{{ post.content }}</p>
+    <!-- Add more content here as needed -->
+    <form method="post" class="my-form">
+    {% csrf_token %}
+    {{ form.field1.label_tag }}
+    {{ form.field1 }}
+    {{ form.field2.label_tag }}
+    {{ form.field2 }}
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+</body>
+</html>
+

@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}Upgrade Successful{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <h2 class="text-center mb-4">Upgrade to Premium Successful!</h2>
+            <div class="card shadow-sm p-4">
+                <h5>User Profile Details</h5>
+                <ul class="list-group mb-3">
+                    <li class="list-group-item"><strong>Username:</strong> {{ user_profile.user.username }}</li>
+                    <li class="list-group-item"><strong>Email:</strong> {{ user_profile.user.email }}</li>
+                    <li class="list-group-item"><strong>Subscription Status:</strong> {{ user_profile.subscription_status }}</li>
+                    <li class="list-group-item"><strong>Subscription Start Date:</strong> {{ user_profile.subscription_start_date }}</li>
+                    <li class="list-group-item"><strong>Subscription End Date:</strong> {{ user_profile.subscription_end_date }}</li>
+                    <li class="list-group-item"><strong>Interests:</strong> 
+                        {% if user_profile.interests.all %}
+                            {{ user_profile.interests.all|join:", " }}
+                        {% else %}
+                            No interests selected.
+                        {% endif %}
+                    </li>
+                </ul>
+                <a href="{% url 'blog:home' %}" class="btn btn-primary">Go to Home</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Recommended Courses</h2>
+    <div class="row">
+        {% for course in courses %}
+            <div class="col-md-4">
+                <h4>{{ course.title }}</h4>
+                <p>{{ course.description }}</p>
+                <p>Difficulty: {{ course.get_difficulty_display }}</p>
+                <a href="{% url 'blog:course_detail' course.slug %}">View Course</a>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
