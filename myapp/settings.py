@@ -134,3 +134,21 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # settings.py
 # YOUTUBE_API_KEY = 'AIzaSyDF-V4T8t9hhagfB09OXlAiS4HU9nrtJEY'
 YOUTUBE_API_KEY = 'AIzaSyB4AB0MbozK8Z-NnYnnXwFFmmALnS_yPAE'
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'WARNING',
+    },
+    'django': {
+        'handlers': ['console'],
+        'level': 'INFO',
+    },
+}

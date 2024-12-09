@@ -1,31 +1,27 @@
 # Use the official Python image.
-# https://hub.docker.com/_/python
 FROM python:3.9-slim
-
 
 # Allow statements and log messages to immediately appear in the Cloud Run logs
 ENV PYTHONUNBUFFERED True
 
 # Copy application dependency manifests to the container image.
-# Copying this separately prevents re-running pip install on every code change.
 COPY requirements.txt ./
 
 # Install production dependencies.
-RUN pip install -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy local code to the container image.
 ENV APP_HOME /app
 WORKDIR $APP_HOME
-COPY . ./
+COPY . .
 
-RUN python manage.py collectstatic --noinput
+# Ensure the static files directory is writable
+RUN mkdir -p /app/staticfiles && chmod -R 755 /app/staticfiles
 
+# Expose the default port for Cloud Run
 EXPOSE 8080
 
-# Run the web service on container startup.
-# Use gunicorn webserver with one worker process and 8 threads.
-# For environments with multiple CPU cores, increase the number of workers
-# to be equal to the cores available.
-CMD exec gunicorn --bind :$PORT --workers 1 --threads 8 --timeout 0 myapp.wsgi
+# Run the web service on container startup
+CMD ["sh", "-c", "python manage.py collectstatic --noinput && gunicorn --bind :$PORT --workers 1 --threads 8 --timeout 0 myapp.wsgi"]
 
 RUN python manage.py create_admin
