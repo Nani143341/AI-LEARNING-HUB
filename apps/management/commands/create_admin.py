@@ -3,15 +3,28 @@ from django.contrib.auth.models import User
 import os
 
 class Command(BaseCommand):
-    help = 'Create a superuser if none exists'
+    help = 'Create or update a superuser'
 
     def handle(self, *args, **kwargs):
         username = os.getenv('DJANGO_SUPERUSER_USERNAME', 'admin')
         email = os.getenv('DJANGO_SUPERUSER_EMAIL', 'admin@example.com')
         password = os.getenv('DJANGO_SUPERUSER_PASSWORD', 'adminpass')
 
-        if not User.objects.filter(username=username).exists():
-            User.objects.create_superuser(username=username, email=email, password=password)
+        user, created = User.objects.update_or_create(
+            username=username,
+            defaults={
+                'email': email,
+                'is_superuser': True,
+                'is_staff': True
+            }
+        )
+
+        if created:
+            user.set_password(password)
+            user.save()
             self.stdout.write(f"Superuser {username} created.")
         else:
-            self.stdout.write(f"Superuser {username} already exists.")
+            if password:
+                user.set_password(password)
+            user.save()
+            self.stdout.write(f"Superuser {username} updated with new details.")
