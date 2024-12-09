@@ -7,3 +7,4 @@ google-api-core==2.16.2
 google-api-python-client==2.116.0
 flask 
 requests
+pillow
