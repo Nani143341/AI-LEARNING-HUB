@@ -11,12 +11,12 @@ COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy local code to the container image.
-ENV APP_HOME /app
+ENV APP_HOME /apps
 WORKDIR $APP_HOME
 COPY . .
 
 # Ensure the static files directory is writable
-RUN mkdir -p /app/staticfiles && chmod -R 755 /app/staticfiles
+RUN mkdir -p /apps/static/files && chmod -R 755 /apps/static/files
 
 # Expose the default port for Cloud Run
 EXPOSE 8080
