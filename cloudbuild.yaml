@@ -1,35 +1,30 @@
 steps:
-  # Step 1: Build the Docker image
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'us-central1-docker.pkg.dev/$PROJECT_ID/my-docker-images-repo/myapp:$COMMIT_SHA', '.']
-
-  # Step 2: Push the Docker image to Artifact Registry
+    args: ['build', '-t', 'us-central1-docker.pkg.dev/$PROJECT_ID/my-docker-images-repo/$_SERVICE_NAME:$COMMIT_SHA', '.']
+  
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'us-central1-docker.pkg.dev/$PROJECT_ID/my-docker-images-repo/myapp:$COMMIT_SHA']
-
-  # Step 3: Deploy the image to Cloud Run
+    args: ['push', 'us-central1-docker.pkg.dev/$PROJECT_ID/my-docker-images-repo/$_SERVICE_NAME:$COMMIT_SHA']
+  
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: gcloud
     args:
+      - 'beta'
       - 'run'
       - 'deploy'
-      - 'myapp'
+      - 'ai'
       - '--image'
-      - 'us-central1-docker.pkg.dev/$PROJECT_ID/my-docker-images-repo/myapp:$COMMIT_SHA'
+      - 'us-central1-docker.pkg.dev/$PROJECT_ID/my-docker-images-repo/$_SERVICE_NAME:$COMMIT_SHA'
       - '--region'
       - 'us-central1'
       - '--platform'
       - 'managed'
+      - '--min-instances'
+      - '0'
+      - '--max-instances'
+      - '1'
       - '--allow-unauthenticated'
-      - '--set-env-vars'
-      - 'SECRET_KEY=$SECRET_KEY,DEBUG=$DEBUG,DATABASE_URL=$DATABASE_URL,AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID,AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY,AWS_STORAGE_BUCKET_NAME=$AWS_STORAGE_BUCKET_NAME,AWS_S3_REGION_NAME=$AWS_S3_REGION_NAME,AWS_S3_CUSTOM_DOMAIN=$AWS_S3_CUSTOM_DOMAIN,DATABASE_NAME=$DATABASE_NAME,DATABASE_USER=$DATABASE_USER,DATABASE_PASSWORD=$DATABASE_PASSWORD,DATABASE_PORT=$DATABASE_PORT,DATABASE_HOST=$DATABASE_HOST'
 
 images:
-  - 'us-central1-docker.pkg.dev/$PROJECT_ID/my-docker-images-repo/myapp'
+  - 'us-central1-docker.pkg.dev/$PROJECT_ID/my-docker-images-repo/$_SERVICE_NAME'
 
-substitutions:
-  _SERVICE_NAME: "myapp"
-  _REGION: "us-central1"
-
-options:
-  logging: CLOUD_LOGGING_ONLY
+logsBucket: "gs://samiri-bucket"  # Add your logs bucket here

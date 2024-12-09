@@ -1,27 +1,27 @@
-# Use the official Python slim image
+# Use the official Python image.
+# https://hub.docker.com/_/python
 FROM python:3.9-slim
 
-# Set environment variables
-ENV PYTHONUNBUFFERED=1
-ENV PORT=8080
 
-# Set the working directory
-WORKDIR /app
+# Allow statements and log messages to immediately appear in the Cloud Run logs
+ENV PYTHONUNBUFFERED True
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y gcc libpq-dev && rm -rf /var/lib/apt/lists/*
+# Copy application dependency manifests to the container image.
+# Copying this separately prevents re-running pip install on every code change.
+COPY requirements.txt ./
 
-# Copy dependency manifests
-COPY requirements.txt /app/
+# Install production dependencies.
+RUN pip install -r requirements.txt
 
-# Install dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+# Copy local code to the container image.
+ENV APP_HOME /app
+WORKDIR $APP_HOME
+COPY . ./
 
-# Copy the application code
-COPY . /app/
-
-# Expose the port for the application
 EXPOSE 8080
 
-# Run the web server
-CMD ["gunicorn", "--bind", ":$PORT", "--workers", "2", "--threads", "4", "myapp.wsgi"]
+# Run the web service on container startup.
+# Use gunicorn webserver with one worker process and 8 threads.
+# For environments with multiple CPU cores, increase the number of workers
+# to be equal to the cores available.
+CMD exec gunicorn --bind :$PORT --workers 1 --threads 8 --timeout 0 myapp.wsgi
