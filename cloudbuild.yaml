@@ -23,15 +23,7 @@ steps:
       - '--max-instances'
       - '1'
       - '--allow-unauthenticated'
-      
-  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-    entrypoint: /bin/bash
-    args:
-      - '-c'
-      - |
-        python manage.py migrate
-        python manage.py shell < create_superuser.py
-        exec gunicorn --bind :$PORT --workers 1 --threads 8 --timeout 0 myapp.wsgi
+
 images:
   - 'us-central1-docker.pkg.dev/$PROJECT_ID/my-docker-images-repo/$_SERVICE_NAME'
 
