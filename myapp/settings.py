@@ -29,8 +29,7 @@ SECRET_KEY = 'django-insecure-6za04a_z$ri*gp8k(u+r785+qxh=6r%&$gvnbwauv)3q##^esg
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['ailearninghub-519609767751.us-central1.run.app',
-                 'ai-519609767751.us-central1.run.app', '127.0.0.1']
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
